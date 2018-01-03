@@ -1,0 +1,180 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="hpcuser.user_list">
+            <field name="name">hpcuser list</field>
+            <field name="model">hpcuser.user</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hpcuser.user_form">
+            <field name="name">hpcuser form</field>
+            <field name="model">hpcuser.user</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" string="User Name"/>
+                        </group>
+
+                        <group>
+                            <field name="status" string="Status"/>
+                        </group>
+
+                        <field name="job"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hpcuser.job_list">
+            <field name="name">job list</field>
+            <field name="model">hpcuser.job</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hpcuser.job_form">
+            <field name="name">job form</field>
+            <field name="model">hpcuser.job</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="status"/>
+                            </group>
+                            <group>
+                                <field name="start_time"/>
+                                <field name="end_time"/>
+                                <field name="wall_time"/>
+                                <field name="queue_time"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="a_mem"/>
+                                <field name="a_cpu"/>
+                                <field name="a_disk"/>
+                            </group>
+                            <group>
+                                <field name="r_mem"/>
+                                <field name="r_cpu"/>
+                                <field name="r_disk"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hpcuser.queue_list">
+            <field name="name">queue list</field>
+            <field name="model">hpcuser.queue</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="node"/>
+                    <field name="job"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hpcuser.queue_form">
+            <field name="name">queue form</field>
+            <field name="model">hpcuser.queue</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+
+                        <group>
+                            <field name="node"/>
+                        </group>
+
+                        <field name="job"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="hpcuser.action_window_user">
+            <field name="name">hpcuser window</field>
+            <field name="res_model">hpcuser.user</field>
+            <field name="view_mode">tree,form,graph</field>
+        </record>
+        <record model="ir.actions.act_window" id="hpcuser.action_window_job">
+            <field name="name">hpcuser window</field>
+            <field name="res_model">hpcuser.job</field>
+            <field name="view_mode">tree,form,graph</field>
+        </record>
+        <record model="ir.actions.act_window" id="hpcuser.action_window_queue">
+            <field name="name">hpcuser window</field>
+            <field name="res_model">hpcuser.queue</field>
+            <field name="view_mode">tree,form,graph</field>
+        </record>
+
+        <!-- server action to the one above -->
+        <record model="ir.actions.server" id="hpcuser.action_server_user">
+            <field name="name">hpcuser server</field>
+            <field name="model_id" ref="model_hpcuser_user"/>
+            <field name="code">
+                action = {
+                "type": "ir.actions.act_window",
+                "view_mode": "tree,form",
+                "res_model": self._name,
+                }
+            </field>
+        </record>
+        <record model="ir.actions.server" id="hpcuser.action_server_job">
+            <field name="name">hpcuser job_server</field>
+            <field name="model_id" ref="model_hpcuser_job"/>
+            <field name="code">
+                action = {
+                "type": "ir.actions.act_window",
+                "view_mode": "tree,form",
+                "res_model": self._name,
+                }
+            </field>
+        </record>
+        <record model="ir.actions.server" id="hpcuser.action_server_queue">
+            <field name="name">hpcuser queue_server</field>
+            <field name="model_id" ref="model_hpcuser_queue"/>
+            <field name="code">
+                action = {
+                "type": "ir.actions.act_window",
+                "view_mode": "tree,form",
+                "res_model": self._name,
+                }
+            </field>
+        </record>
+
+        <!-- Top menu item -->
+        <menuitem name="hpcuser" id="hpcuser.menu_root"/>
+
+        <!-- menu categories -->
+        <!--<menuitem name="User" id="hpcuser.menu_user" parent="hpcuser.menu_root"/>-->
+        <!--<menuitem name="Job" id="hpcuser.menu_job" parent="hpcuser.menu_root"/>-->
+        <!--<menuitem name="Queue" id="hpcuser.menu_queue" parent="hpcuser.menu_root"/>-->
+
+        <!-- actions -->
+        <menuitem name="Queue" id="hpcuser.menu_queue" parent="hpcuser.menu_root"
+                  action="hpcuser.action_window_queue" sequence="3"/>
+        <menuitem name="Job" id="hpcuser.menu_job" parent="hpcuser.menu_root"
+                  action="hpcuser.action_window_job" sequence="2"/>
+        <menuitem name="User" id="hpcuser.menu_user" parent="hpcuser.menu_root"
+                  action="hpcuser.action_window_user" sequence="1"/>
+    </data>
+</odoo>
